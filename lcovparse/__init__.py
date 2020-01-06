@@ -7,9 +7,7 @@ def lcovparse(combined):
     # clean and strip lines
     assert 'end_of_record' in combined, 'lcov file is missing "end_of_record" line(s)'
     files = filter(lambda f: f != '', combined.strip().split("end_of_record"))
-    reports = map(_part, files)
-    return reports
-
+    return [_part(current_file) for current_file in files]
 
 def _part(chunk):
     report = {
@@ -20,7 +18,8 @@ def _part(chunk):
         "functions": [],
         "branches": []
     }
-    map(lambda l: _line(l, report), chunk.split('\n'))
+    for l in chunk.split('\n'):
+        _line(l, report)
     return report
 
 

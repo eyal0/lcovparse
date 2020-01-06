@@ -34,8 +34,8 @@ class LcovparseTests(unittest.TestCase):
           result = lcovparse(lcov_file.read())
         expected_file = os.path.join(path, "branch-lcov.info.json")
         with open(expected_file) as expected:
-            expected_lines = expected.read().splitlines() # No newlines
-            actual_lines = json.dumps(result, indent=2, sort_keys=True).splitlines()
+            expected_lines = [x.strip() for x in expected.read().splitlines()] # No newlines
+            actual_lines = [x.strip() for x in json.dumps(result, indent=2, sort_keys=True).splitlines()]
             self.compare_lines(actual_lines, expected_lines, expected_file)
 
 if __name__ == '__main__':
